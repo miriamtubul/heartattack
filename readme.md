@@ -14,13 +14,13 @@ This project uses patient medical data to predict the likelihood of a heart atta
 ## Dashboard Screenshots
 
 ### Model Metrics
-![Model Metrics](images/dashboard-metrics.png)
+![Model Metrics](images/metrics.png)
 
 ### Prediction Form
-![Prediction Form](images/dashboard-predict.png)
+![Prediction Form](images/predict.png)
 
 ### Variable Importance
-![Variable Importance](images/dashboard-importance.png)
+![Variable Importance](images/importance.png)
 
 ## Files
 
