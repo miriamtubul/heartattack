@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>חיזוי התקף לב</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 { color: #e74c3c; text-align: center; }
+        h2 { color: #333; border-bottom: 2px solid #e74c3c; padding-bottom: 10px; }
+
+        .metrics {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .metric {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .metric .value { font-size: 2em; color: #27ae60; font-weight: bold; }
+        .metric.highlight .value { color: #e74c3c; }
+
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover { background: #c0392b; }
+
+        .result {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        .result.high { background: #ffebee; border: 2px solid #e74c3c; }
+        .result.low { background: #e8f5e9; border: 2px solid #27ae60; }
+        .result h3 { margin: 0; font-size: 1.5em; }
+
+        .importance {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .importance-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .positive { color: #e74c3c; }
+        .negative { color: #27ae60; }
+
+        .metric-explain {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-right: 4px solid #3498db;
+        }
+        .metric-explain h3 { color: #2c3e50; margin-bottom: 10px; }
+        .metric-explain p { margin: 5px 0; color: #555; }
+    </style>
+</head>
+<body>
+    <h1>❤️ חיזוי סיכון להתקף לב</h1>
+
+    <!-- מטריקות -->
+    <h2>📊 ביצועי המודל</h2>
+    <div class="metrics">
+        <div class="metric">
+            <div>Accuracy</div>
+            <div class="value">90%</div>
+        </div>
+        <div class="metric">
+            <div>Precision</div>
+            <div class="value">88%</div>
+        </div>
+        <div class="metric highlight">
+            <div>Recall ⭐</div>
+            <div class="value">94%</div>
+        </div>
+        <div class="metric">
+            <div>F1</div>
+            <div class="value">91%</div>
+        </div>
+    </div>
+
+    <!-- טופס חיזוי -->
+    <h2>🔮 הכנס נתונים לחיזוי</h2>
+    <div class="form-section">
+        <div class="form-grid">
+            <div>
+                <label>גיל</label>
+                <input type="number" id="age" value="50">
+            </div>
+            <div>
+                <label>מין</label>
+                <select id="sex">
+                    <option value="1">זכר</option>
+                    <option value="0">נקבה</option>
+                </select>
+            </div>
+            <div>
+                <label>סוג כאב בחזה</label>
+                <select id="cp">
+                    <option value="0">ללא תסמינים</option>
+                    <option value="1">אנגינה טיפוסית</option>
+                    <option value="2">אנגינה לא טיפוסית</option>
+                    <option value="3">כאב לא לבבי</option>
+                </select>
+            </div>
+            <div>
+                <label>לחץ דם במנוחה</label>
+                <input type="number" id="trtbps" value="120">
+            </div>
+            <div>
+                <label>כולסטרול</label>
+                <input type="number" id="chol" value="200">
+            </div>
+            <div>
+                <label>דופק מקסימלי</label>
+                <input type="number" id="thalachh" value="150">
+            </div>
+            <div>
+                <label>אנגינה במאמץ</label>
+                <select id="exng">
+                    <option value="0">לא</option>
+                    <option value="1">כן</option>
+                </select>
+            </div>
+            <div>
+                <label>מספר כלי דם</label>
+                <select id="ca">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+        </div>
+        <button onclick="predict()">🔮 בצע חיזוי</button>
+
+        <div id="result" class="result">
+            <h3 id="resultText"></h3>
+            <p id="resultProb"></p>
+        </div>
+    </div>
+
+    <!-- הסבר מטריקות -->
+    <h2>📖 מה כל מטריקה אומרת?</h2>
+    <div class="form-section">
+        <div class="metric-explain">
+            <h3>Accuracy (דיוק) = 90%</h3>
+            <p><strong>שאלה:</strong> מתוך כל המטופלים, כמה סיווגנו נכון?</p>
+            <p><strong>חישוב:</strong> (TP + TN) / סה"כ = (30 + 24) / 60 = 90%</p>
+            <p>✅ סיווגנו נכון 54 מתוך 60 מטופלים</p>
+        </div>
+
+        <div class="metric-explain">
+            <h3>Precision (דיוק חיובי) = 88%</h3>
+            <p><strong>שאלה:</strong> מתוך מי שחזינו כ"חולה", כמה באמת חולים?</p>
+            <p><strong>חישוב:</strong> TP / (TP + FP) = 30 / (30 + 4) = 88%</p>
+            <p>✅ מתוך 34 שזיהינו כחולים, 30 באמת חולים</p>
+        </div>
+
+        <div class="metric-explain" style="background: #ffebee;">
+            <h3>⭐ Recall (רגישות) = 94%</h3>
+            <p><strong>שאלה:</strong> מתוך כל החולים האמיתיים, כמה הצלחנו לזהות?</p>
+            <p><strong>חישוב:</strong> TP / (TP + FN) = 30 / (30 + 2) = 94%</p>
+            <p>✅ מתוך 32 חולים אמיתיים, זיהינו 30 (פספסנו רק 2!)</p>
+            <p><strong>🏥 למה הכי חשוב ברפואה?</strong> כי לפספס חולה אמיתי = סכנת חיים!</p>
+        </div>
+
+        <div class="metric-explain">
+            <h3>F1-Score = 91%</h3>
+            <p><strong>שאלה:</strong> מה האיזון בין Precision ל-Recall?</p>
+            <p><strong>חישוב:</strong> 2 × (Precision × Recall) / (Precision + Recall)</p>
+            <p>✅ ממוצע הרמוני - שימושי כשרוצים לאזן בין השניים</p>
+        </div>
+    </div>
+
+    <!-- חשיבות משתנים -->
+    <h2>📈 המשתנים שהכי משפיעים</h2>
+    <div class="importance">
+        <h3 class="positive">🔴 מגדילים סיכון:</h3>
+        <div class="importance-item"><span>מין (זכר)</span><span class="positive">+0.87</span></div>
+        <div class="importance-item"><span>מספר כלי דם</span><span class="positive">+0.72</span></div>
+        <div class="importance-item"><span>אנגינה במאמץ</span><span class="positive">+0.58</span></div>
+
+        <h3 class="negative" style="margin-top: 20px;">🟢 מקטינים סיכון:</h3>
+        <div class="importance-item"><span>כאב לא לבבי</span><span class="negative">-1.12</span></div>
+        <div class="importance-item"><span>דופק מקסימלי גבוה</span><span class="negative">-0.62</span></div>
+    </div>
+
+    <script>
+        function predict() {
+            const age = +document.getElementById('age').value;
+            const sex = +document.getElementById('sex').value;
+            const cp = +document.getElementById('cp').value;
+            const trtbps = +document.getElementById('trtbps').value;
+            const chol = +document.getElementById('chol').value;
+            const thalachh = +document.getElementById('thalachh').value;
+            const exng = +document.getElementById('exng').value;
+            const ca = +document.getElementById('ca').value;
+
+            // חישוב פשוט
+            let z = -2.5;
+            z += 0.035 * age;
+            z += 0.87 * sex;
+            z += 0.012 * trtbps;
+            z += 0.008 * chol;
+            z += -0.032 * thalachh;
+            z += 0.58 * exng;
+            z += 0.72 * ca;
+            z += (cp === 1 ? -0.51 : 0) + (cp === 2 ? -0.94 : 0) + (cp === 3 ? -1.12 : 0);
+
+            const prob = 1 / (1 + Math.exp(-z));
+            const result = document.getElementById('result');
+            const text = document.getElementById('resultText');
+            const probText = document.getElementById('resultProb');
+
+            result.style.display = 'block';
+
+            if (prob >= 0.5) {
+                result.className = 'result high';
+                text.textContent = '⚠️ סיכון גבוה להתקף לב';
+            } else {
+                result.className = 'result low';
+                text.textContent = '✅ סיכון נמוך להתקף לב';
+            }
+            probText.textContent = 'סיכוי להתקף לב: ' + (prob * 100).toFixed(0) + '%';
+        }
+    </script>
+</body>
+</html>
