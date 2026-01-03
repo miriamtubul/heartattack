@@ -11,6 +11,17 @@ A machine learning project that predicts heart attack risk using Logistic Regres
 
 This project uses patient medical data to predict the likelihood of a heart attack. The model achieves **90% accuracy** with a **94% recall** - critical for medical applications where missing a true positive (sick patient) can be life-threatening.
 
+## Dashboard Screenshots
+
+### Model Metrics
+![Model Metrics](images/dashboard-metrics.png)
+
+### Prediction Form
+![Prediction Form](images/dashboard-predict.png)
+
+### Variable Importance
+![Variable Importance](images/dashboard-importance.png)
+
 ## Files
 
 | File | Description |
